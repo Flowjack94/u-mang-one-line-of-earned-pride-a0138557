@@ -27,13 +27,15 @@ def validate_entry(text: str) -> None:
     """
     # UTF-8 round-trip check.
     text.encode("utf-8")
+    if not text.strip():
+        raise ValueError("entry must not be empty or only whitespace")
+    if "\n" in text or "\r" in text:
+        raise ValueError("entry must be a single line (no newline characters)")
     if not (MIN_CHARS <= len(text) <= MAX_CHARS):
         raise ValueError(
             f"entry must be {MIN_CHARS}-{MAX_CHARS} characters, "
             f"got {len(text)}"
         )
-    if not text.strip():
-        raise ValueError("entry must not be only whitespace")
 
 
 def main() -> int:
